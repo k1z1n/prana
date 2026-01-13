@@ -1,10 +1,10 @@
 <?php
 
 $host   = 'localhost';
-$db     = 'prana';
+$db     = 'k1z1nksb_prana';
 $charset= 'utf8';
-$user   = 'root';
-$pass   = '';
+$user   = 'k1z1nksb_prana';
+$pass   = 'k1z1nksb_prana1';
 $dsn    = "mysql:host={$host};dbname={$db};charset={$charset}";
 
 // Опции PDO
@@ -18,5 +18,10 @@ try {
     $database = new PDO($dsn, $user, $pass, $options);
 } catch (PDOException $e) {
     error_log('[' . date('Y-m-d H:i:s') . '] Произошла какая-то ошибка: ' . $e->getMessage() . PHP_EOL, 3, __DIR__ . '/../logs/database.log');
-    exit();
+    // На продакшене не показываем детали ошибки, только логируем
+    if (ini_get('display_errors')) {
+        die('Ошибка подключения к базе данных. Проверьте логи или обратитесь к администратору.');
+    } else {
+        die('Ошибка подключения к базе данных.');
+    }
 }
