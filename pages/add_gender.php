@@ -2,6 +2,8 @@
 // pages/add_gender.php
 global $database;   // Ваш PDO из router'а
 
+require_once __DIR__ . '/../includes/path_helper.php';
+
 $errors  = [];
 $success = $_SESSION['message'] ?? null;
 
@@ -58,7 +60,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <?php endif; ?>
 
                     <!-- Форма -->
-                    <form class="admin-form" method="post" action="?page=add_gender">
+                    <form class="admin-form" method="post" action="<?= url('?page=add_gender') ?>">
                         <div class="full-width">
                             <label for="title">Название пола:</label>
                             <input

@@ -1,6 +1,8 @@
 <?php
 global $database;
 
+require_once __DIR__ . '/../includes/path_helper.php';
+
 if (isset($_GET['id']) && !empty($_GET['id'])) {
     $id = $_GET['id'];
 
@@ -37,10 +39,10 @@ if (isset($_GET['id']) && !empty($_GET['id'])) {
 
                 // Проверяем, не было ли вывода до этого места
                 if (!headers_sent()) {
-                    header('Location: ./?page=basket');
+                    header('Location: ' . url('?page=basket'));
                     exit;
                 } else {
-                    echo '<script>window.location.href = "./?page=basket";</script>';
+                    echo '<script>window.location.href = "' . url('?page=basket') . '";</script>';
                     exit;
                 }
             } catch (PDOException $e) {
@@ -75,7 +77,7 @@ $sizes = $database->query("SELECT id, title FROM size ORDER BY id")->fetchAll(PD
         <?php if (!empty($images)): ?>
             <?php foreach ($images as $image): ?>
                 <div class="slide">
-                    <img src="<?= '../uploads/products/' . htmlspecialchars($image['path']) ?>" alt="">
+                    <img src="<?= url('uploads/products/' . htmlspecialchars($image['path'])) ?>" alt="">
                 </div>
             <?php endforeach; ?>
         <?php endif; ?>
@@ -96,7 +98,7 @@ $sizes = $database->query("SELECT id, title FROM size ORDER BY id")->fetchAll(PD
                     <p><?= $product['lining_second'] ?></p>
                 </div>
             </div>
-            <form action="?page=product&id=<?= $product['id'] ?>" method="post" class="add-to-cart-form">
+            <form action="<?= url('?page=product&id=' . $product['id']) ?>" method="post" class="add-to-cart-form">
                 <div class="size">
                     <p class="section-title">Размер</p>
                     <?php foreach ($sizes as $size): ?>
@@ -115,10 +117,10 @@ $sizes = $database->query("SELECT id, title FROM size ORDER BY id")->fetchAll(PD
 
     <div class="slider-buttons container">
         <button id="prev" class="slider-btn">
-            <img src="../assets/media/image/tovar/prev.svg" alt="prev">
+            <img src="<?= url('assets/media/image/tovar/prev.svg') ?>" alt="prev">
         </button>
         <button id="next" class="slider-btn">
-            <img src="../assets/media/image/tovar/next.svg" alt="next">
+            <img src="<?= url('assets/media/image/tovar/next.svg') ?>" alt="next">
         </button>
     </div>
 </div>

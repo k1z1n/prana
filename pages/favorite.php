@@ -2,9 +2,11 @@
 
 global $database;
 
+require_once __DIR__ . '/../includes/path_helper.php';
+
 // Проверяем авторизацию
 if (!isset($_SESSION['user_id'])) {
-    header('Location: ?page=login');
+    header('Location: ' . url('?page=login'));
     exit;
 }
 
@@ -33,7 +35,7 @@ $favorite_products = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
         <?php if (empty($favorite_products)): ?>
             <div class="empty_favorite">
-                <a href="?page=catalog" class="black_btn">ПЕРЕЙТИ В КАТАЛОГ</a>
+                <a href="<?= url('?page=catalog') ?>" class="black_btn">ПЕРЕЙТИ В КАТАЛОГ</a>
             </div>
             <h4 class="h4_favorite">ВАМ ТАКЖЕ МОЖЕТ ПОНРАВИТЬСЯ</h4>
             <div class="cards_block_katalog">
@@ -48,15 +50,15 @@ $favorite_products = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 ");
                 $random_products = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 foreach ($random_products as $p): ?>
-                    <a href="?page=product&id=<?= $p['id'] ?>">
+                    <a href="<?= url('?page=product&id=' . $p['id']) ?>">
                         <div class="card_tovar">
                             <?php if ($p['image']): ?>
-                                <img src="uploads/products/<?= htmlspecialchars($p['image']) ?>" alt="<?= htmlspecialchars($p['title']) ?>">
+                                <img src="<?= url('uploads/products/' . htmlspecialchars($p['image'])) ?>" alt="<?= htmlspecialchars($p['title']) ?>">
                             <?php else: ?>
                                 <div class="no-photo">Нет фото</div>
                             <?php endif; ?>
                             <img
-                                src="assets/media/image/index/catalog/heart.svg"
+                                src="<?= url('assets/media/image/index/catalog/heart.svg') ?>"
                                 alt=""
                                 class="heart favorite-btn"
                                 data-product-id="<?= $p['id'] ?>"
@@ -74,15 +76,15 @@ $favorite_products = $stmt->fetchAll(PDO::FETCH_ASSOC);
         <?php else: ?>
             <div class="cards_block_katalog">
                 <?php foreach ($favorite_products as $p): ?>
-                    <a href="?page=product&id=<?= $p['id'] ?>">
+                    <a href="<?= url('?page=product&id=' . $p['id']) ?>">
                         <div class="card_tovar">
                             <?php if ($p['image']): ?>
-                                <img src="uploads/products/<?= htmlspecialchars($p['image']) ?>" alt="<?= htmlspecialchars($p['title']) ?>">
+                                <img src="<?= url('uploads/products/' . htmlspecialchars($p['image'])) ?>" alt="<?= htmlspecialchars($p['title']) ?>">
                             <?php else: ?>
                                 <div class="no-photo">Нет фото</div>
                             <?php endif; ?>
                             <img
-                                src="assets/media/image/index/catalog/heart-red.svg"
+                                src="<?= url('assets/media/image/index/catalog/heart-red.svg') ?>"
                                 alt="" 
                                 class="heart favorite-btn"
                                 data-product-id="<?= $p['id'] ?>"
@@ -110,11 +112,12 @@ $favorite_products = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 <script>
 function toggleFavorite(btn) {
+    const basePath = '<?= getBasePath() ?>';
     const productId = btn.dataset.productId;
     const formData = new FormData();
     formData.append('product_id', productId);
 
-    fetch('actions/toggle_favorite.php', {
+    fetch(basePath + 'actions/toggle_favorite.php', {
         method: 'POST',
         body: formData
     })

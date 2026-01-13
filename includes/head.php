@@ -1,6 +1,8 @@
 <?php
 global $database;
 
+require_once __DIR__ . '/path_helper.php';
+
 session_start();
 if(isset($_SESSION['user_id'])) {
     // (int) жесткое изменение типа данных
@@ -16,7 +18,7 @@ if(isset($_SESSION['user_id']) && $USER['banned'] === 'banned'){
     // Уничтожаем сессию на сервере
     session_destroy();
     unset($_SESSION['user_id']);
-    header('Location: ./');
+    header('Location: ' . url('./'));
     exit;
 }
 
@@ -26,7 +28,7 @@ if(isset($_GET['exit'])) {
     // Уничтожаем сессию на сервере
     session_destroy();
     unset($_SESSION['user_id']);
-    header('Location: ./');
+    header('Location: ' . url('./'));
     exit;
 }
 

@@ -1,5 +1,7 @@
 <?php
 
+require_once __DIR__ . '/../includes/path_helper.php';
+
 $sql = "SELECT c.*, g.title AS gender_title FROM categories c JOIN genders g ON c.gender_id = g.id";
 $stmt = $database->query($sql);
 $categories = $stmt->fetchAll(2);
@@ -22,8 +24,8 @@ $categories = $stmt->fetchAll(2);
                                 <h3><?= $category['title'] ?> <span class="category-gender">(<?= $category['gender_title'] ?>)</span></h3>
                             </div>
                             <div class="category-btns">
-                                <a href="./?page=edit_category&id=<?= $category['id'] ?>" class="black_btn">РЕДАКТИРОВАТЬ</a>
-                                <a href="../actions/delete_admin.php?type=category&id=<?= $category['id'] ?>"
+                                <a href="<?= url('?page=edit_category&id=' . $category['id']) ?>" class="black_btn">РЕДАКТИРОВАТЬ</a>
+                                <a href="<?= url('actions/delete_admin.php?type=category&id=' . $category['id']) ?>"
                                    onclick="return confirm('Вы уверены, что хотите удалить этот товар?');" class="black_btn"
                                    style="margin-top: 10px;text-align: center">УДАЛИТЬ</a>
                             </div>

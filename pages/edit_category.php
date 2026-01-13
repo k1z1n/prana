@@ -1,9 +1,11 @@
 <?php
 global $database;
 
+require_once __DIR__ . '/../includes/path_helper.php';
+
 // Проверка прав
 if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
-    header('Location: ../');
+    header('Location: ' . url('./'));
     exit;
 }
 
@@ -107,7 +109,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         </div><br>
                     <?php endif; ?>
 
-                    <form class="admin-form" method="post" action="?page=edit_category&id=<?= $id ?>">
+                    <form class="admin-form" method="post" action="<?= url('?page=edit_category&id=' . $id) ?>">
                         <div class="full-width">
                             <label for="title">Название категории:</label>
                             <input

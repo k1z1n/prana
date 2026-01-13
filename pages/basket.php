@@ -1,8 +1,10 @@
 <?php
 global $database;
 
+require_once __DIR__ . '/../includes/path_helper.php';
+
 if (!isset($_SESSION['user_id'])) {
-    header('Location: ./?page=login');
+    header('Location: ' . url('?page=login'));
     exit;
 }
 
@@ -36,7 +38,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $cart_id = (int)$_POST['cart_id'];
         $stmt = $database->prepare("UPDATE carts SET count = count + 1 WHERE id = :cart_id AND user_id = :user_id");
         $stmt->execute([':cart_id' => $cart_id, ':user_id' => $user_id]);
-        header('Location: ./?page=basket');
+        header('Location: ' . url('?page=basket'));
         exit;
     }
     
@@ -51,7 +53,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $stmt = $database->prepare("DELETE FROM carts WHERE id = :cart_id AND user_id = :user_id");
             $stmt->execute([':cart_id' => $cart_id, ':user_id' => $user_id]);
         }
-        header('Location: ./?page=basket');
+        header('Location: ' . url('?page=basket'));
         exit;
     }
     
@@ -77,10 +79,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             // Проверяем, не были ли отправлены заголовки
             if (!headers_sent()) {
-                header('Location: ./?page=basket');
+                header('Location: ' . url('?page=basket'));
                 exit;
             } else {
-                echo '<script>window.location.href = "./?page=basket";</script>';
+                echo '<script>window.location.href = "' . url('?page=basket') . '";</script>';
                 exit;
             }
         } catch (Exception $e) {
@@ -120,10 +122,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             // Проверяем, не были ли отправлены заголовки
             if (!headers_sent()) {
-                header('Location: ./?page=basket');
+                header('Location: ' . url('?page=basket'));
                 exit;
             } else {
-                echo '<script>window.location.href = "./?page=basket";</script>';
+                echo '<script>window.location.href = "' . url('?page=basket') . '";</script>';
                 exit;
             }
         } catch (Exception $e) {
@@ -180,7 +182,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $database->commit();
 
             // Перенаправляем на страницу успешного оформления заказа
-                echo "<script>window.location.href='./?page=order_success&order_number=" . urlencode($order_number) . "';</script>";
+                echo "<script>window.location.href='" . url('?page=order_success&order_number=' . urlencode($order_number)) . "';</script>";
                 exit;
             
         } catch (Exception $e) {
@@ -209,7 +211,7 @@ foreach ($result as $item) {
                 <?php foreach ($result as $cart): ?>
                     <div class="card_tovar_in_basket">
                         <?php if ($cart['image']): ?>
-                            <img src="uploads/products/<?= htmlspecialchars($cart['image']) ?>" alt="<?= htmlspecialchars($cart['title']) ?>" width="100px">
+                            <img src="<?= url('uploads/products/' . htmlspecialchars($cart['image'])) ?>" alt="<?= htmlspecialchars($cart['title']) ?>" width="100px">
                         <?php else: ?>
                             <div class="no-photo">Нет фото</div>
                         <?php endif; ?>
@@ -265,11 +267,11 @@ foreach ($result as $item) {
             <hr>
             <span class="help_text_basket">МОЖЕМ ЛИ МЫ ПОМОЧЬ?</span>
             <div class="kontacts_help_basket">
-                <img src="./assets/media/image/basket/phone.svg" alt="">
+                <img src="<?= url('assets/media/image/basket/phone.svg') ?>" alt="">
                 <a href="tel:+8 800 777-7-777">8 800 777-7-777</a>
             </div>
             <div class="kontacts_help_basket">
-                <img src="./assets/media/image/basket/email.svg" alt="">
+                <img src="<?= url('assets/media/image/basket/email.svg') ?>" alt="">
                 <a href="mailto:pranashop@mail.ru">pranashop@mail.ru</a>
             </div>
         </div>
@@ -312,8 +314,9 @@ foreach ($result as $item) {
 document.querySelectorAll('.edit-btn').forEach(btn => {
     btn.addEventListener('click', function(e) {
         e.preventDefault();
+        const basePath = '<?= getBasePath() ?>';
         document.getElementById('editModal').style.display = 'block';
-        document.getElementById('modalProductImage').src = this.dataset.image ? 'uploads/products/' + this.dataset.image : '';
+        document.getElementById('modalProductImage').src = this.dataset.image ? basePath + 'uploads/products/' + this.dataset.image : '';
         document.getElementById('modalProductTitle').textContent = this.dataset.title;
         document.getElementById('modalProductPrice').textContent = this.dataset.price + ' ₽';
         document.getElementById('modalCartId').value = this.dataset.cartId;

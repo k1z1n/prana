@@ -3,6 +3,8 @@
 /** @var PDO $database */
 global $database;
 
+require_once __DIR__ . '/../includes/path_helper.php';
+
 // Включаем буферизацию вывода
 ob_start();
 
@@ -69,7 +71,7 @@ $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 <h2 class="h2_admin">ПОЛЬЗОВАТЕЛИ</h2>
 
                 <!-- Поисковая форма -->
-                <form method="get" action="./" style="display:inline;">
+                <form method="get" action="<?= url('./') ?>" style="display:inline;">
                     <input type="hidden" name="page" value="admin_users">
                     <input
                             type="text"
@@ -97,7 +99,7 @@ $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
                             <!-- Бан/разбан -->
                             <form
                                     method="post"
-                                    action="?page=admin_users<?= $search!==''?'&search='.urlencode($search):'' ?>"
+                                    action="<?= url('?page=admin_users' . ($search!==''?'&search='.urlencode($search):'')) ?>"
                                     style="display:inline"
                             >
                                 <input type="hidden" name="user_id"    value="<?= $user['id'] ?>">

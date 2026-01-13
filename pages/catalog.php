@@ -3,6 +3,8 @@
 
 global $database;
 
+require_once __DIR__ . '/../includes/path_helper.php';
+
 // 1) Загружаем все гендеры
 $genders = $database
     ->query("SELECT id, title FROM genders ORDER BY title")
@@ -106,10 +108,10 @@ if (isset($_SESSION['user_id'])) {
 
             // Проверяем, не было ли вывода до этого места
             if (!headers_sent()) {
-                header('Location: ./?page=basket');
+                header('Location: ' . url('?page=basket'));
                 exit;
             } else {
-                echo '<script>window.location.href = "./?page=basket";</script>';
+                echo '<script>window.location.href = "' . url('?page=basket') . '";</script>';
                 exit;
             }
         } catch (PDOException $e) {
@@ -129,7 +131,7 @@ if (isset($_SESSION['user_id'])) {
             $stmt->bindParam(':id', $delete_id);
 
             if ($stmt->execute()) {
-                header("Location: ./");
+                header("Location: " . url('./'));
                 exit;
             } else {
                 echo 'Ошибка удаления';
@@ -142,7 +144,7 @@ if (isset($_SESSION['user_id'])) {
 ?>
 
 <!-- BANNER -->
-<div class="banner_catalog container fixed" style="background-image: url('assets/media/image/catalog/banner/<?= mb_strtolower($gender['title']) === 'женщины' ? 'woman' : 'men' ?>.jpg'); background-size: cover; background-position: center; min-height: 645px; width: 100%; max-width: 1400px;">
+<div class="banner_catalog container fixed" style="background-image: url('<?= url('assets/media/image/catalog/banner/' . (mb_strtolower($gender['title']) === 'женщины' ? 'woman' : 'men') . '.jpg') ?>'); background-size: cover; background-position: center; min-height: 645px; width: 100%; max-width: 1400px;">
     <h3 class="h3_catalog">НОВИНКИ</h3>
     <h1 class="h1_catalog"><?= htmlspecialchars($gender['title'] ?? '') ?></h1>
     <p>В коллекции <?= mb_strtolower(htmlspecialchars($gender['title'] ?? '')) ?> весна-лето 2025 представлена новая сумка на плечо, сумки и украшения, вдохновленные бамбуком, и модели с символом Horsebit.</p>
@@ -154,7 +156,7 @@ if (isset($_SESSION['user_id'])) {
     <?php foreach ($genders as $g): ?>
         <button class="btn_in_filtr_hidden">
             <a
-                href="?page=catalog&gender=<?= urlencode($g['title']) ?>"
+                href="<?= url('?page=catalog&gender=' . urlencode($g['title'])) ?>"
                 class="<?= ($g['id'] === $gender_id) ? 'active' : '' ?>">
                 <?= htmlspecialchars($g['title']) ?>
             </a>
@@ -165,7 +167,7 @@ if (isset($_SESSION['user_id'])) {
 
     <!-- Все категории -->
     <a
-        href="?page=catalog&gender=<?= urlencode($gender['title']) ?>"
+        href="<?= url('?page=catalog&gender=' . urlencode($gender['title'])) ?>"
         class="<?= $category_id ? '' : 'active' ?>">
         Все категории
     </a>
@@ -173,7 +175,7 @@ if (isset($_SESSION['user_id'])) {
     <!-- Конкретные категории -->
     <?php foreach ($categories as $c): ?>
         <a
-            href="?page=catalog&gender=<?= urlencode($gender['title']) ?>&category=<?= urlencode($c['title']) ?>"
+            href="<?= url('?page=catalog&gender=' . urlencode($gender['title']) . '&category=' . urlencode($c['title'])) ?>"
             class="<?= ($c['id'] === $category_id) ? 'active' : '' ?>">
             <?= htmlspecialchars($c['title']) ?>
         </a>
@@ -188,14 +190,14 @@ if (isset($_SESSION['user_id'])) {
         <div class="cards_block_katalog">
             <?php foreach ($products as $p): ?>
                 <div class="card_tovar">
-                    <a href="?page=product&id=<?= $p['id'] ?>" class="card_thumb">
+                    <a href="<?= url('?page=product&id=' . $p['id']) ?>" class="card_thumb">
                         <?php if ($p['image']): ?>
-                            <img src="uploads/products/<?= htmlspecialchars($p['image']) ?>"
+                            <img src="<?= url('uploads/products/' . htmlspecialchars($p['image'])) ?>"
                                 alt="<?= htmlspecialchars($p['title']) ?>">
                         <?php else: ?>
                             <div class="no-photo">Нет фото</div>
                         <?php endif; ?>
-                        <img src="assets/media/image/index/catalog/<?= $p['is_favorite'] ? 'heart-red.svg' : 'heart.svg' ?>"
+                        <img src="<?= url('assets/media/image/index/catalog/' . ($p['is_favorite'] ? 'heart-red.svg' : 'heart.svg')) ?>"
                             class="heart favorite-btn"
                             data-product-id="<?= $p['id'] ?>"
                             onclick="event.preventDefault(); toggleFavorite(this);"
@@ -269,8 +271,9 @@ if (isset($_SESSION['user_id'])) {
 
 <script>
     function toggleFavorite(btn) {
+        const basePath = '<?= getBasePath() ?>';
         if (!<?= isset($_SESSION['user_id']) ? 'true' : 'false' ?>) {
-            window.location.href = '?page=login';
+            window.location.href = basePath + '?page=login';
             return;
         }
 
@@ -278,7 +281,7 @@ if (isset($_SESSION['user_id'])) {
         const formData = new FormData();
         formData.append('product_id', productId);
 
-        fetch('actions/toggle_favorite.php', {
+        fetch(basePath + 'actions/toggle_favorite.php', {
                 method: 'POST',
                 body: formData
             })
@@ -291,7 +294,7 @@ if (isset($_SESSION['user_id'])) {
 
                 // Toggle heart icon
                 const isFavorite = data.status === 'added';
-                btn.src = `assets/media/image/index/catalog/heart${isFavorite ? '-red' : ''}.svg`;
+                btn.src = basePath + `assets/media/image/index/catalog/heart${isFavorite ? '-red' : ''}.svg`;
             })
             .catch(error => {
                 console.error('Error:', error);

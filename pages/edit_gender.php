@@ -1,6 +1,8 @@
 <?php
 // pages/edit_gender.php
 global $database;
+
+require_once __DIR__ . '/../includes/path_helper.php';
 $id = (int)($_GET['id'] ?? 0);
 if (!$id) {
     exit('Неверный ID');
@@ -54,7 +56,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             </ul></div>
                     <?php endif; ?>
 
-                    <form method="post" class="admin-form" action="?page=edit_gender&id=<?= $id ?>">
+                    <form method="post" class="admin-form" action="<?= url('?page=edit_gender&id=' . $id) ?>">
                         <div class="full-width">
                             <label for="title">Название пола:</label>
                             <input

@@ -4,6 +4,8 @@
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
+
+require_once __DIR__ . '/includes/path_helper.php';
 ?>
 <!DOCTYPE html>
 <html lang="ru">
@@ -11,8 +13,8 @@ error_reporting(E_ALL);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
     <title>Prana</title>
-    <link rel="shortcut icon" href="assets/media/image/index/logo/PR.svg" type="image/x-icon">
-    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="shortcut icon" href="<?= url('assets/media/image/index/logo/PR.svg') ?>" type="image/x-icon">
+    <link rel="stylesheet" href="<?= url('assets/css/style.css') ?>">
 </head>
 <body>
 
@@ -67,11 +69,11 @@ if (in_array($page, $adminPages, true) && $userRole !== 'admin') {
     exit('Доступ запрещён');
 }
 if (in_array($page, $userPages, true) && $userRole === null) {
-    header('Location: ?page=login');
+    header('Location: ' . url('?page=login'));
     exit;
 }
 if (in_array($page, $guestPages, true) && $userRole !== null) {
-    header('Location: ./');
+    header('Location: ' . url('./'));
     exit;
 }
 

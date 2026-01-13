@@ -2,6 +2,8 @@
 global $database;
 global $USER;
 
+require_once __DIR__ . '/../includes/path_helper.php';
+
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $username = $_POST['username'];
     $email = $_POST['email'];
@@ -42,32 +44,32 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             </div>
             <div class="header-right">
                 <?php if ($USER): ?>
-                    <a href="../?page=basket"> <img src="../assets/media/image/index/header/1.png" alt="" class="header-icon"></a>
+                    <a href="<?= url('?page=basket') ?>"> <img src="<?= url('assets/media/image/index/header/1.png') ?>" alt="" class="header-icon"></a>
                 <?php endif; ?>
                 <div class="user_menu">
-                    <img src="../assets/media/image/index/header/2.png" alt="" class="header-icon">
+                    <img src="<?= url('assets/media/image/index/header/2.png') ?>" alt="" class="header-icon">
                     <div class="dropdown_menu">
                         <?php if (isset($_SESSION['user_id'])): ?>
-                            <a href="./?page=account">Мой аккаунт</a>
-                            <a href="./?page=user_orders">Мои заказы</a>
-                            <a href="./?page=setting_account">Настройка аккаунта</a>
-                            <a href="./?page=favorite">Сохраненные элементы</a>
+                            <a href="<?= url('?page=account') ?>">Мой аккаунт</a>
+                            <a href="<?= url('?page=user_orders') ?>">Мои заказы</a>
+                            <a href="<?= url('?page=setting_account') ?>">Настройка аккаунта</a>
+                            <a href="<?= url('?page=favorite') ?>">Сохраненные элементы</a>
                             <?php if (isset($USER['role']) && $USER['role'] === 'admin'): ?>
                                 <div class="dropdown_line"></div>
-                                <a href="./?page=add_product">Панель администратора</a>
+                                <a href="<?= url('?page=add_product') ?>">Панель администратора</a>
                             <?php endif; ?>
                             <div class="dropdown_line"></div>
-                            <a href="?exit" class="exit">Выход</a>
+                            <a href="<?= url('?exit') ?>" class="exit">Выход</a>
                         <?php else: ?>
-                            <a href="./?page=login">Войти</a>
-                            <a href="./?page=login">Мои заказы</a>
-                            <a href="./?page=login">Настройка аккаунта</a>
-                            <a href="./?page=login">Сохраненные элементы</a>
+                            <a href="<?= url('?page=login') ?>">Войти</a>
+                            <a href="<?= url('?page=login') ?>">Мои заказы</a>
+                            <a href="<?= url('?page=login') ?>">Настройка аккаунта</a>
+                            <a href="<?= url('?page=login') ?>">Сохраненные элементы</a>
                         <?php endif; ?>
                     </div>
                 </div>
                 <div class="menu_burger">
-                    <img src="../assets/media/image/index/header/4.png" alt="" class="header-icon burger-icon">
+                    <img src="<?= url('assets/media/image/index/header/4.png') ?>" alt="" class="header-icon burger-icon">
                     <span class="menu-text">Меню</span>
                 </div>
             </div>
@@ -77,13 +79,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <!-- BANNER START -->
     <div class="banner">
         <div class="banner_block container">
-            <a href="#" id="banner-logo-link"> <img src="../assets/media/image/index/banner/Prana.svg" alt="" class="banner-logo" id="banner-logo"></a>
+            <a href="#" id="banner-logo-link"> <img src="<?= url('assets/media/image/index/banner/Prana.svg') ?>" alt="" class="banner-logo" id="banner-logo"></a>
             <div class="btns_in_katalog_her_him">
                 <div class="btns_her_him">
-                    <a href="./?page=catalog&gender=Женщины">
+                    <a href="<?= url('?page=catalog&gender=Женщины') ?>">
                         <button class="white_btn">Для нее</button>
                     </a>
-                    <a href="./?page=catalog&gender=Мужчины">
+                    <a href="<?= url('?page=catalog&gender=Мужчины') ?>">
                         <button class="white_btn">Для него</button>
                     </a>
                 </div>
@@ -220,15 +222,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $random_products = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
         foreach ($random_products as $p): ?>
-            <a href="?page=product&id=<?= $p['id'] ?>">
+            <a href="<?= url('?page=product&id=' . $p['id']) ?>">
                 <div class="card_tovar">
                     <?php if ($p['image']): ?>
-                        <img src="uploads/products/<?= htmlspecialchars($p['image']) ?>"
+                        <img src="<?= url('uploads/products/' . htmlspecialchars($p['image'])) ?>"
                             alt="<?= htmlspecialchars($p['title']) ?>">
                     <?php else: ?>
                         <div class="no-photo">Нет фото</div>
                     <?php endif; ?>
-                    <img src="assets/media/image/index/catalog/<?= $p['is_favorite'] ? 'heart-red.svg' : 'heart.svg' ?>"
+                    <img src="<?= url('assets/media/image/index/catalog/' . ($p['is_favorite'] ? 'heart-red.svg' : 'heart.svg')) ?>"
                         alt=""
                         class="heart favorite-btn"
                         data-product-id="<?= $p['id'] ?>"
@@ -261,7 +263,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             <p>Не упустите возможность обновить свой стиль с нашей новой коллекцией! Откройте для себя итальянскую
                 моду и создайте образы, которые будут вдохновлять вас каждый день. Заказывайте прямо сейчас и
                 наслаждайтесь бесплатной доставкой на первые покупки!</p>
-            <a href="./?page=catalog">
+            <a href="<?= url('?page=catalog') ?>">
                 <button class="black_btn">В каталог</button>
             </a>
         </div>
@@ -290,7 +292,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 <div class="about mt-115" id="about">
     <h2>О НАС</h2>
     <div class="about_block container">
-        <img src="../assets/media/image/index/about_us/1.jpg" alt="">
+        <img src="<?= url('assets/media/image/index/about_us/1.jpg') ?>" alt="">
         <div class="rigth_content_about_block">
             <p>Prana - это воплощение итальянской страсти к моде и стилю. Наша компания родилась в самом сердце
                 Италии, где традиции высокого качества и безупречного вкуса передаются из поколения в поколение.
@@ -311,14 +313,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 <div class="burger-menu-overlay"></div>
 <div class="burger-menu">
     <button class="close-burger">
-        <img src="../assets/media/image/index/header/otmena.svg" alt="Закрыть">
+        <img src="<?= url('assets/media/image/index/header/otmena.svg') ?>" alt="Закрыть">
     </button>
     <nav class="burger-nav">
         <a href="#new">Новинки</a>
         <a href="#new-collection">Новая коллекция</a>
         <a href="#rassilka">Подписаться на рассылку</a>
-        <a href="./?page=catalog&gender=Мужчины">Мужчинам</a>
-        <a href="./?page=catalog&gender=Женщины">Женщинам</a>
+        <a href="<?= url('?page=catalog&gender=Мужчины') ?>">Мужчинам</a>
+        <a href="<?= url('?page=catalog&gender=Женщины') ?>">Женщинам</a>
         <a href="#about">О нас</a>
         <a href="#footer">Контакты</a>
 
@@ -397,8 +399,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     });
 
     function toggleFavorite(btn) {
+        const basePath = '<?= getBasePath() ?>';
         if (!<?= isset($_SESSION['user_id']) ? 'true' : 'false' ?>) {
-            window.location.href = '?page=login';
+            window.location.href = basePath + '?page=login';
             return;
         }
 
@@ -406,7 +409,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         const formData = new FormData();
         formData.append('product_id', productId);
 
-        fetch('actions/toggle_favorite.php', {
+        fetch(basePath + 'actions/toggle_favorite.php', {
                 method: 'POST',
                 body: formData
             })
@@ -419,7 +422,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
                 // Toggle heart icon
                 const isFavorite = data.status === 'added';
-                btn.src = `assets/media/image/index/catalog/heart${isFavorite ? '-red' : ''}.svg`;
+                btn.src = basePath + `assets/media/image/index/catalog/heart${isFavorite ? '-red' : ''}.svg`;
             })
             .catch(error => {
                 console.error('Error:', error);

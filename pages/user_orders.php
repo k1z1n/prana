@@ -3,10 +3,11 @@ global $database;
 
 // Подключаем утилиты для работы с заказами
 require_once __DIR__ . '/../includes/order_utils.php';
+require_once __DIR__ . '/../includes/path_helper.php';
 
 // Проверка, авторизован ли пользователь
 if (!isset($_SESSION['user_id'])) {
-    header('Location: ./?page=login');
+    header('Location: ' . url('?page=login'));
     exit;
 }
 
@@ -35,7 +36,7 @@ $orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
         <div class="empty_zakaz_block">
             <span>ВАШИ ЗАКАЗЫ БУДУТ ОТОБРАЖАТЬСЯ ЗДЕСЬ</span>
             <p>Как только вы оформите заказ, вы сможете следить за его доставкой на каждом этапе.</p>
-            <a href="./?page=catalog" class="black_btn">ПЕРЕЙТИ В КАТАЛОГ</a>
+            <a href="<?= url('?page=catalog') ?>" class="black_btn">ПЕРЕЙТИ В КАТАЛОГ</a>
         </div>
     <?php else: ?>
         <div class="orders-list">
@@ -84,7 +85,7 @@ $orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                     <tr>
                                         <td>
                                             <?php if ($item['image_path']): ?>
-                                                <img src="uploads/products/<?= htmlspecialchars($item['image_path']) ?>" alt="<?= htmlspecialchars($item['product_title']) ?>" width="50">
+                                                <img src="<?= url('uploads/products/' . htmlspecialchars($item['image_path'])) ?>" alt="<?= htmlspecialchars($item['product_title']) ?>" width="50">
                                             <?php endif; ?>
                                         </td>
                                         <td><?= htmlspecialchars($item['product_title']) ?></td>

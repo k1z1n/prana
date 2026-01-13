@@ -2,6 +2,8 @@
 // pages/admin_genders.php
 // Убедитесь, что $database и $USER уже доступны из роутера
 
+require_once __DIR__ . '/../includes/path_helper.php';
+
 // Получаем все записи из таблицы genders
 $sql     = "SELECT * FROM genders ORDER BY id";
 $stmt    = $database->query($sql);
@@ -39,13 +41,13 @@ $genders = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                 <h3><?= htmlspecialchars($gender['title']) ?></h3>
                             </div>
                             <a
-                                href="./?page=edit_gender&id=<?= $gender['id'] ?>"
+                                href="<?= url('?page=edit_gender&id=' . $gender['id']) ?>"
                                 class="black_btn"
                             >
                                 РЕДАКТИРОВАТЬ
                             </a>
                             <a
-                                href="../actions/delete_admin.php?type=gender&id=<?= $gender['id'] ?>"
+                                href="<?= url('actions/delete_admin.php?type=gender&id=' . $gender['id']) ?>"
                                 class="black_btn"
                                 style="margin-top: 10px; text-align: center"
                                 onclick="return confirm('Вы уверены, что хотите удалить этот пол?');"

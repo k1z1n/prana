@@ -1,6 +1,8 @@
 <?php
+require_once __DIR__ . '/../includes/path_helper.php';
+
 if (!isset($_GET['order_number'])) {
-    header('Location: ./?page=basket');
+    header('Location: ' . url('?page=basket'));
     exit;
 }
 
@@ -13,7 +15,7 @@ $order_number = $_GET['order_number'];
         <p>Номер вашего заказа: <strong><?= htmlspecialchars($order_number) ?></strong></p>
         <p>Мы отправим вам уведомление о статусе заказа на указанный email.</p>
         <div class="success-actions">
-            <a href="./" class="black_btn">Вернуться на главную</a>
+            <a href="<?= url('./') ?>" class="black_btn">Вернуться на главную</a>
         </div>
     </div>
 </div>

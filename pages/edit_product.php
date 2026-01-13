@@ -2,6 +2,8 @@
 // pages/edit_product.php
 global $database;
 
+require_once __DIR__ . '/../includes/path_helper.php';
+
 // Сообщение об успехе
 $success = $_SESSION['message'] ?? '';
 unset($_SESSION['message']);
@@ -220,7 +222,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             method="post"
                             enctype="multipart/form-data"
                             class="admin-form"
-                            action="?page=edit_product&id=<?= $id ?>"
+                            action="<?= url('?page=edit_product&id=' . $id) ?>"
                     >
                         <!-- Название -->
                         <div class="full-width">

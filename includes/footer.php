@@ -1,3 +1,6 @@
+<?php
+require_once __DIR__ . '/path_helper.php';
+?>
     <!-- FOOTER START -->
     <footer class="mt-115" id="footer">
         <div class="footer_menu container">
@@ -14,9 +17,9 @@
                     <h4>КОМПАНИЯ</h4>
                     <nav>
                         <a href="#about">О компании</a>
-                        <a href="../assets/documents/uriditechskaya.docx" download="">Юридическая информация</a>
-                        <a href="../assets/documents/politikaconf.docx" download="">Политика конфиденциальности и использования файлов Cookie</a>
-                        <a href="../assets/documents/pravinfo.docx" download="">Правовая информация</a>
+                        <a href="<?= url('assets/documents/uriditechskaya.docx') ?>" download="">Юридическая информация</a>
+                        <a href="<?= url('assets/documents/politikaconf.docx') ?>" download="">Политика конфиденциальности и использования файлов Cookie</a>
+                        <a href="<?= url('assets/documents/pravinfo.docx') ?>" download="">Правовая информация</a>
                     </nav>
                 </div>
                 <div class="info_in_footer">
@@ -28,10 +31,10 @@
                     </nav>
                 </div>
                 <div class="icons">
-                    <a href="#"><img src="../assets/media/image/index/footer/vk.svg" alt=""></a>
-                    <a href="#"><img src="../assets/media/image/index/footer/tg.svg" alt=""></a>
-                    <a href="#"><img src="../assets/media/image/index/footer/inst.svg" alt=""></a>
-                    <a href="#"><img src="../assets/media/image/index/footer/tviter.svg" alt=""></a>
+                    <a href="#"><img src="<?= url('assets/media/image/index/footer/vk.svg') ?>" alt=""></a>
+                    <a href="#"><img src="<?= url('assets/media/image/index/footer/tg.svg') ?>" alt=""></a>
+                    <a href="#"><img src="<?= url('assets/media/image/index/footer/inst.svg') ?>" alt=""></a>
+                    <a href="#"><img src="<?= url('assets/media/image/index/footer/tviter.svg') ?>" alt=""></a>
                 </div>
             </div>
             <div class="line_in_footer"></div>
