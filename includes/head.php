@@ -3,7 +3,7 @@ global $database;
 
 require_once __DIR__ . '/path_helper.php';
 
-session_start();
+// session_start() теперь вызывается в index.php до любого вывода
 if(isset($_SESSION['user_id'])) {
     // (int) жесткое изменение типа данных
     $id   = (int) $_SESSION['user_id'];

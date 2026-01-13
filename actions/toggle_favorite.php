@@ -1,8 +1,7 @@
 <?php
-require_once __DIR__ . '/../database/connect.php';
-
-
+// session_start() должен быть первым, до любого вывода
 session_start();
+require_once __DIR__ . '/../database/connect.php';
 if (!isset($_SESSION['user_id'])) {
     http_response_code(401);
     echo json_encode(['error' => 'Unauthorized']);

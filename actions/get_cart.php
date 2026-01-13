@@ -1,7 +1,8 @@
 <?php
+// session_start() должен быть первым, до любого вывода
 session_start();
-header('Content-Type: application/json');
 require_once __DIR__ . '/../database/connect.php';
+header('Content-Type: application/json');
 
 if (!isset($_SESSION['user_id'])) {
     echo json_encode(['success' => false, 'items' => []]);

@@ -1,11 +1,18 @@
 <?php
-
 // 👉 Включаем показ ошибок (только для разработки!)
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
+// Подключаем необходимые файлы ДО любого вывода
 require_once __DIR__ . '/includes/path_helper.php';
+require_once __DIR__ . '/database/connect.php';
+
+// Запускаем сессию ДО любого вывода HTML
+session_start();
+
+// Подключаем head.php, который работает с сессией и БД
+require_once __DIR__ . '/includes/head.php';
 ?>
 <!DOCTYPE html>
 <html lang="ru">
@@ -19,8 +26,6 @@ require_once __DIR__ . '/includes/path_helper.php';
 <body>
 
 <?php
-require_once __DIR__ . '/database/connect.php';
-require_once __DIR__ . '/includes/head.php';
 
 // --- Списки страниц ---
 // страницы админа
